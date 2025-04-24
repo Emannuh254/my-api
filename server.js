@@ -1,27 +1,29 @@
+// Importing necessary modules
 const express = require('express');
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Sample data or route to fetch apps
-app.get('/api/apps', (req, res) => {
-  const softwareData = [
-    {
-      name: "Software 1",
-      description: "Great productivity software.",
-      category: "Productivity",
-      downloadLink: "http://example.com/download/software1"
-    },
-    {
-      name: "Software 2",
-      description: "Perfect for video editing.",
-      category: "Multimedia",
-      downloadLink: "http://example.com/download/software2"
-    }
-  ];
+// Middleware to parse JSON requests
+app.use(express.json());
 
-  res.json(softwareData);
+// Root route - for checking if the server is running
+app.get('/', (req, res) => {
+  res.send('Welcome to the API! Your server is running.');
 });
 
-app.listen(port, () => {
-  console.log(`API running at http://localhost:${port}`);
+// API endpoint to get apps (customize as needed)
+app.get('/api/apps', (req, res) => {
+  // Example response, replace this with your actual data fetching logic
+  const apps = [
+    { name: 'App 1', description: 'This is the first app' },
+    { name: 'App 2', description: 'This is the second app' },
+    { name: 'App 3', description: 'This is the third app' },
+  ];
+
+  res.json(apps);
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`API running at http://localhost:${PORT}`);
 });
