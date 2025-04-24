@@ -1,29 +1,28 @@
-// Importing necessary modules
-const express = require('express');
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON requests
-app.use(express.json());
-
-// Root route - for checking if the server is running
-app.get('/', (req, res) => {
-  res.send('Welcome to the API! Your server is running.');
+// Serve the root route
+app.get("/", (req, res) => {
+  res.send("Welcome to the API! Your server is running.");
 });
 
-// API endpoint to get apps (customize as needed)
-app.get('/api/apps', (req, res) => {
-  // Example response, replace this with your actual data fetching logic
-  const apps = [
-    { name: 'App 1', description: 'This is the first app' },
-    { name: 'App 2', description: 'This is the second app' },
-    { name: 'App 3', description: 'This is the third app' },
-  ];
+// Serve the /api/apps route using the mock_android_apps.json file
+app.get("/api/apps", (req, res) => {
+  const filePath = path.join(__dirname, "mock_android_apps.json");
 
-  res.json(apps);
+  // Read the JSON file and send the data
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res.status(500).json({ message: "Error reading the file." });
+    }
+    const apps = JSON.parse(data);
+    res.json(apps); // Send the data as JSON
+  });
 });
 
-// Start the server
 app.listen(PORT, () => {
-  console.log(`API running at http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
